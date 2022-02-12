@@ -1,14 +1,10 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-//const client = new Discord.Client({intents : [
-//    Discord.Intents.FLAGS.GUILDS,
-//    Discord.Intents.FLAGS.GUILD_MESSAGES
-//]})
-//const { joinVoiceChannel } = require('@discordjs/voice');
 const ytdl = require('ytdl-core');
 const prefix = "!";
 const fs = require('fs');
 const permitted = require('./permitted.json'); // path may vary depending on the file location
+const songs = require('./songs.json'); // path may vary depending on the file location
 
 client.on('ready', () => {
     client.user.setActivity("an orc kill me", {
@@ -31,6 +27,7 @@ client.on('message', async message => {
     if (!permitted.includes(message.author.id)) return;
     switch(command) {
         case "join" :
+            if (message.member.voice.channel) {
                 const connection = await message.member.voice.channel.join();
                 console.log("Channel: " + message.member.voice.channel.name + " | Person: " + message.author);
             } else {
@@ -43,7 +40,6 @@ client.on('message', async message => {
                     }
                 }
                 });
-                message.channel.send({embeds: [join_embed]});
             }
             break;
         case "1" :
@@ -52,7 +48,7 @@ client.on('message', async message => {
                 // get connection info
                 const connection = await message.member.voice.channel.join();
                 // init array of links
-                const villageMusic = ["https://www.youtube.com/watch?v=_xa6Cqjl540"]
+                const villageMusic = ["https://www.youtube.com/watch?v=70RNKIbZlhA"]
                 // get a random link
                 const random = Math.floor(Math.random() * villageMusic.length);
                 // log that to console
@@ -75,11 +71,11 @@ client.on('message', async message => {
         case "2" :
             if (message.member.voice.channel) {
                 const connection = await message.member.voice.channel.join();
-                const battleMusic = ["https://www.youtube.com/watch?v=x6_4Zu692kI"]
+                const battleMusic = ["https://www.youtube.com/watch?v=A8qMyBWZNw0"]
                 const random = Math.floor(Math.random() * battleMusic.length);
                 message.channel.send({ embed: {
                     color: 15277667,
-                    title: "Into the Mists",
+                    title: "RPG Playlist - Peaceful/Travel Music",
                     description: 'Run `!stop` to stop',
                     footer: {
                         text: "Coded by TwilightBlood, be amazed"
@@ -94,11 +90,11 @@ client.on('message', async message => {
         case "3" :
             if (message.member.voice.channel) {
                 const connection = await message.member.voice.channel.join();
-                const bossMusic = ["https://www.youtube.com/watch?v=4OMxBDePbRQ"]
+                const bossMusic = ["https://www.youtube.com/watch?v=fIuO3RpMvHg&start=1669"]
                 const random = Math.floor(Math.random() * bossMusic.length);
                 message.channel.send({ embed: {
                     color: 15277667,
-                    title: "Barovian Legends (Town Theme)",
+                    title: "RPG Playlist - Tavern/Inn Music",
                     description: 'Run `!stop` to stop',
                     footer: {
                         text: "Coded by TwilightBlood, be amazed"
@@ -113,11 +109,11 @@ client.on('message', async message => {
         case "4" :
             if (message.member.voice.channel) {
                 const connection = await message.member.voice.channel.join();
-                const ominousMusic = ["https://www.youtube.com/watch?v=z2iSqQWGFxA"]
+                const ominousMusic = ["https://www.youtube.com/watch?v=xt2DFT4JCBs"]
                 const random = Math.floor(Math.random() * ominousMusic.length);
                 message.channel.send({ embed: {
                     color: 15277667,
-                    title: "Dancing with the Wolves",
+                    title: "Inscryption OST 13 - The Temple of Magicks",
                     description: 'Run `!stop` to stop',
                     footer: {
                         text: "Coded by TwilightBlood, be amazed"
@@ -145,11 +141,11 @@ client.on('message', async message => {
         case "5" :
             if (message.member.voice.channel) {
                 const connection = await message.member.voice.channel.join();
-                const exploreMusic = ["https://www.youtube.com/watch?v=FXNPmDwjGgQ"]
+                const exploreMusic = ["https://www.youtube.com/watch?v=2F6-GCMHZNI"]
                 const random = Math.floor(Math.random() * exploreMusic.length);
                 message.channel.send({ embed: {
                     color: 15277667,
-                    title: "Castle Ravenloft",
+                    title: "1 Hour | Epic Music | Audiomachine | Desolation and War",
                     description: 'Run `!stop` to stop',
                     footer: {
                         text: "Coded by TwilightBlood, be amazed"
