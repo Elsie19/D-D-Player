@@ -4,7 +4,8 @@ const ytdl = require('ytdl-core');
 const prefix = "!";
 const fs = require('fs');
 const permitted = require('./permitted.json'); // path may vary depending on the file location
-const songs = require('./songs.json'); // path may vary depending on the file location
+const song_json = require('./songs.json'); // path may vary depending on the file location
+var data = JSON.parse(fs.readFileSync('./songs.json'));
 
 client.on('ready', () => {
     client.user.setActivity("an orc kill me", {
@@ -25,6 +26,7 @@ client.on('message', async message => {
 
     // This right here detects if a user can run commands (ei: Hepno, and TwilightBlood)
     if (!permitted.includes(message.author.id)) return;
+    if (!message.content.startsWith(prefix) || message.author.bot) return;
     switch(command) {
         case "join" :
             if (message.member.voice.channel) {
@@ -42,89 +44,6 @@ client.on('message', async message => {
                 });
             }
             break;
-        case "1" :
-            // check if user is in vc
-            if (message.member.voice.channel) {
-                // get connection info
-                const connection = await message.member.voice.channel.join();
-                // init array of links
-                const villageMusic = ["https://www.youtube.com/watch?v=70RNKIbZlhA"]
-                // get a random link
-                const random = Math.floor(Math.random() * villageMusic.length);
-                // log that to console
-                console.log(random, villageMusic[random]);
-                // send embed
-                message.channel.send({ embed: {
-                    color: 15277667,
-                    title: "Playing intro music",
-                    description: 'Run `!stop` to stop',
-                    footer: {
-                        text: "Coded by TwilightBlood, be amazed"
-                    }
-                }
-                });
-                // play music
-                connection.play(ytdl(villageMusic[random], { filter: 'audioonly' }, { type: 'ogg/opus', }
-                ))};
-            break;
-
-        case "2" :
-            if (message.member.voice.channel) {
-                const connection = await message.member.voice.channel.join();
-                const battleMusic = ["https://www.youtube.com/watch?v=A8qMyBWZNw0"]
-                const random = Math.floor(Math.random() * battleMusic.length);
-                message.channel.send({ embed: {
-                    color: 15277667,
-                    title: "RPG Playlist - Peaceful/Travel Music",
-                    description: 'Run `!stop` to stop',
-                    footer: {
-                        text: "Coded by TwilightBlood, be amazed"
-                    }
-                }
-                });
-                console.log(random, battleMusic[random]);
-                connection.play(ytdl(battleMusic[random], { filter: 'audioonly' }, { type: 'ogg/opus', }
-                ))};
-            break;
-
-        case "3" :
-            if (message.member.voice.channel) {
-                const connection = await message.member.voice.channel.join();
-                const bossMusic = ["https://www.youtube.com/watch?v=fIuO3RpMvHg&start=1669"]
-                const random = Math.floor(Math.random() * bossMusic.length);
-                message.channel.send({ embed: {
-                    color: 15277667,
-                    title: "RPG Playlist - Tavern/Inn Music",
-                    description: 'Run `!stop` to stop',
-                    footer: {
-                        text: "Coded by TwilightBlood, be amazed"
-                    }
-                }
-                });
-                console.log(random, bossMusic[random]);
-                connection.play(ytdl(bossMusic[random], { filter: 'audioonly' }, { type: 'ogg/opus', }
-                ))};
-            break;
-
-        case "4" :
-            if (message.member.voice.channel) {
-                const connection = await message.member.voice.channel.join();
-                const ominousMusic = ["https://www.youtube.com/watch?v=xt2DFT4JCBs"]
-                const random = Math.floor(Math.random() * ominousMusic.length);
-                message.channel.send({ embed: {
-                    color: 15277667,
-                    title: "Inscryption OST 13 - The Temple of Magicks",
-                    description: 'Run `!stop` to stop',
-                    footer: {
-                        text: "Coded by TwilightBlood, be amazed"
-                    }
-                }
-                });
-                console.log(random, ominousMusic[random]);
-                connection.play(ytdl(ominousMusic[random], { filter: 'audioonly' }, { type: 'ogg/opus', }
-                ))};
-            break;
-
         case "stop" :
             if (message.member.voice.channel) {
                 const connection = await message.member.voice.channel.join();
@@ -138,46 +57,7 @@ client.on('message', async message => {
                 connection.disconnect();
             }
             break;
-        case "5" :
-            if (message.member.voice.channel) {
-                const connection = await message.member.voice.channel.join();
-                const exploreMusic = ["https://www.youtube.com/watch?v=2F6-GCMHZNI"]
-                const random = Math.floor(Math.random() * exploreMusic.length);
-                message.channel.send({ embed: {
-                    color: 15277667,
-                    title: "1 Hour | Epic Music | Audiomachine | Desolation and War",
-                    description: 'Run `!stop` to stop',
-                    footer: {
-                        text: "Coded by TwilightBlood, be amazed"
-                    }
-                }
-                });
-                console.log(random, exploreMusic[random]);
-                connection.play(ytdl(exploreMusic[random], { filter: 'audioonly' }, { type: 'ogg/opus', }
-                ))};
-            break;
-
-        case "6" :
-            if (message.member.voice.channel) {
-                const connection = await message.member.voice.channel.join();
-                const eeryMusic = ["https://www.youtube.com/watch?v=9_gRgDO4rYI"]
-                const random = Math.floor(Math.random() * eeryMusic.length);
-                message.channel.send({ embed: {
-                    color: 15277667,
-                    title: "Dream Pastries",
-                    description: 'Run `!stop` to stop',
-                    footer: {
-                        text: "Coded by TwilightBlood, be amazed"
-                    }
-                }
-                });
-                console.log(random, eeryMusic[random]);
-                connection.play(ytdl(eeryMusic[random], { filter: 'audioonly' }, { type: 'ogg/opus', }
-
-                ))};
-            break;
-
-            case "help" :
+        case "help" :
             message.channel.send({ embed: {
                 color: 15277667,
                 title: "Invalid command!",
@@ -226,9 +106,29 @@ client.on('message', async message => {
             }
             });
             break;
-
-    }
-});
+        default:
+            var valid_cmds = ['stop', 'join', 'leave', 'help']
+            var valid_cmds_json = Object.keys(data);
+            const valid_cmds_combined = valid_cmds.concat(valid_cmds_json)
+            if(!valid_cmds_combined.includes(command)) return;
+            if (message.member.voice.channel) {
+                const connection = await message.member.voice.channel.join();
+                var music = data[command];
+                console.log(music);
+                const title = (await ytdl.getBasicInfo(music)).videoDetails.title;
+                console.log("Playing", title)
+                message.channel.send({ embed: {
+                      color: 15277667,
+                      title: title,
+                      description: 'Run `!stop` to stop',
+                      footer: {
+                          text: "Coded by TwilightBlood, be amazed"
+                      }
+                }
+                });
+                connection.play(ytdl(music, { filter: 'audioonly' }, { type: 'ogg/opus', }
+            ))};
+}});
 
 // sekret
 client.login('ODY2NzMxNDYyNTM5NzM5MTY2.YPW0kw.t1JVbyte2NGgI05tRM9k2VMpS8Q');
