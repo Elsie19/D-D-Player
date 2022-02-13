@@ -4,7 +4,6 @@ const ytdl = require('ytdl-core');
 const prefix = "!";
 const fs = require('fs');
 const permitted = require('./permitted.json'); // path may vary depending on the file location
-const song_json = require('./songs.json'); // path may vary depending on the file location
 var data = JSON.parse(fs.readFileSync('./songs.json'));
 
 client.on('ready', () => {
@@ -48,6 +47,7 @@ client.on('message', async message => {
             if (message.member.voice.channel) {
                 const connection = await message.member.voice.channel.join();
                 connection.dispatcher.pause(true);
+                console.log("Stopped playing music");
             }
             break;
 
@@ -109,24 +109,32 @@ client.on('message', async message => {
         default:
             var valid_cmds = ['stop', 'join', 'leave', 'help']
             var valid_cmds_json = Object.keys(data);
-            const valid_cmds_combined = valid_cmds.concat(valid_cmds_json)
+            const valid_cmds_combined = valid_cmds.concat(valid_cmds_json);
             if(!valid_cmds_combined.includes(command)) return;
             if (message.member.voice.channel) {
                 const connection = await message.member.voice.channel.join();
+                msg = await message.channel.send({ embed: {
+                    color: 15277667,
+                    title: "Fetching music",
+                }});
                 var music = data[command];
                 console.log(music);
                 const title = (await ytdl.getBasicInfo(music)).videoDetails.title;
-                console.log("Playing", title)
-                message.channel.send({ embed: {
+                const thumbnail = ytdl.getURLVideoID(music);
+                console.log("Playing", title);
+                msg.edit({ embed: {
                       color: 15277667,
                       title: title,
                       description: 'Run `!stop` to stop',
+                      thumbnail: {
+                          url: `https://img.youtube.com/vi/${thumbnail}/mqdefault.jpg`,
+                      },
                       footer: {
                           text: "Coded by TwilightBlood, be amazed"
                       }
                 }
                 });
-                connection.play(ytdl(music, { filter: 'audioonly' }, { type: 'ogg/opus', }
+                connection.play(ytdl(music, { filter: 'audioonly' }, { type: 'ogg/opus'}, { highWaterMark: 50}, { volume: false, }
             ))};
 }});
 
