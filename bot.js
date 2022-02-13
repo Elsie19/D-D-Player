@@ -7,9 +7,10 @@ const permitted = require('./permitted.json'); // path may vary depending on the
 var data = JSON.parse(fs.readFileSync('./songs.json'));
 
 client.on('ready', () => {
+    client.user.setStatus('dnd');
     client.user.setActivity("an orc kill me", {
         type: 'WATCHING'
-    })
+    });
     console.log("Logged in");
 });
 
@@ -47,6 +48,8 @@ client.on('message', async message => {
             if (message.member.voice.channel) {
                 const connection = await message.member.voice.channel.join();
                 connection.dispatcher.pause(true);
+                const reactionEmoji = message.guild.emojis.cache.find(emoji => emoji.name === 'updatedone');
+                message.react(reactionEmoji);
                 console.log("Stopped playing music");
             }
             break;
@@ -54,6 +57,8 @@ client.on('message', async message => {
         case "leave" :
             if (message.member.voice.channel) {
                 const connection = await message.member.voice.channel.join();
+                const reactionEmoji = message.guild.emojis.cache.find(emoji => emoji.name === 'goodbye');
+                message.react(reactionEmoji);
                 connection.disconnect();
             }
             break;
@@ -116,6 +121,7 @@ client.on('message', async message => {
                 msg = await message.channel.send({ embed: {
                     color: 15277667,
                     title: "Fetching music",
+                    description: "Please wait while D&D Player gets your music",
                 }});
                 var music = data[command];
                 console.log(music);
@@ -134,7 +140,7 @@ client.on('message', async message => {
                       }
                 }
                 });
-                connection.play(ytdl(music, { filter: 'audioonly' }, { type: 'ogg/opus'}, { highWaterMark: 50}, { volume: false, }
+                connection.play(ytdl(music, { filter: 'audioonly' }, { type: 'ogg/opus'}, { volume: false }, { quality: 'highestaudio' }, { highWaterMark: 1<<25 }, { highWaterMark: 1 }
             ))};
 }});
 
