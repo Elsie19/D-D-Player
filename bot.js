@@ -30,13 +30,12 @@ client.on('message', async message => {
     switch(command) {
         case "join" :
             if (message.member.voice.channel) {
-                const connection = await message.member.voice.channel.join();
                 console.log("Channel: " + message.member.voice.channel.name + " | Person: " + message.author);
             } else {
                 message.channel.send({ embed: {
                     color: 15277667,
                     title: "Error: not in voice chat",
-                    description: 'Join a vc and rerun this command',
+                    description: 'Join a VC and rerun this command',
                     footer: {
                         text: "D&D Player - TwilightBlood"
                     }
@@ -68,48 +67,28 @@ client.on('message', async message => {
                 title: "Invalid command!",
                 description: 'Available commands:',
                 fields: [{
-                    name: "OUTDATED INFO, BUT IM TOO LAZY TO FIX",
-                    value: "INDEED"
-                },
-                {
                     name: "!join",
-                    value: "Run this in vc to get D&D Player to join"
+                    value: "Run this in VC to get D&D Player to join"
                 },
                 {
                     name: "!stop",
-                    value: "Run this in vc to stop music"
+                    value: "Run this in VC to stop music"
                 },
                 {
                     name: "!leave",
-                    value: "Run this in vc to make D&D Player leave"
-                },
-                {
-                    name: "!village",
-                    value: "Run this in vc to play village music"
-                },
-                {
-                    name: "!battle",
-                    value: "Run this in vc to play battle music"
-                },
-                {
-                    name: "!boss",
-                    value: "Run this in vc to play boss music"
-                },
-                {
-                    name: "!ominous",
-                    value: "Run this in vc to play ominous music"
-                },
-                {
-                    name: "!explore",
-                    value: "Run this in vc to play explory music"
-                },
-                {
-                    name: "!eery",
-                    value: "Run this in vc to play eery music"
+                    value: "Run this in VC to make D&D Player leave"
                 }
                 ],
             }
             });
+            break;
+        case "list" :
+            var valid_cmds_json = Object.keys(data);
+            message.channel.send({ embed: {
+              color: 15277667,
+              title: "Available music",
+              description: `${valid_cmds_json}`,
+            }});
             break;
         default:
             var valid_cmds = ['stop', 'join', 'leave', 'help']
