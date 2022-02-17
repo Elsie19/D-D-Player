@@ -4,6 +4,7 @@ const ytdl = require('ytdl-core');
 const prefix = "!";
 const fs = require('fs');
 const permitted = require('./permitted.json'); // path may vary depending on the file location
+const config = require('./config.json');
 var data = JSON.parse(fs.readFileSync('./songs.json'));
 
 client.on('ready', () => {
@@ -30,6 +31,7 @@ client.on('message', async message => {
     switch(command) {
         case "join" :
             if (message.member.voice.channel) {
+                const connection = await message.member.voice.channel.join();
                 console.log("Channel: " + message.member.voice.channel.name + " | Person: " + message.author);
             } else {
                 message.channel.send({ embed: {
@@ -124,4 +126,4 @@ client.on('message', async message => {
 }});
 
 // sekret
-client.login('ODY2NzMxNDYyNTM5NzM5MTY2.YPW0kw.t1JVbyte2NGgI05tRM9k2VMpS8Q');
+client.login(config.token);
