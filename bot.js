@@ -49,8 +49,7 @@ client.on('message', async message => {
             if (message.member.voice.channel) {
                 const connection = await message.member.voice.channel.join();
                 connection.dispatcher.pause(true);
-                const reactionEmoji = message.guild.emojis.cache.find(emoji => emoji.name === 'updatedone');
-                message.react(reactionEmoji);
+                message.react("👍");
                 console.log("Stopped playing music");
             }
             break;
@@ -58,8 +57,7 @@ client.on('message', async message => {
         case "leave" :
             if (message.member.voice.channel) {
                 const connection = await message.member.voice.channel.join();
-                const reactionEmoji = message.guild.emojis.cache.find(emoji => emoji.name === 'goodbye');
-                message.react(reactionEmoji);
+                message.react("👍");
                 connection.disconnect();
             }
             break;
