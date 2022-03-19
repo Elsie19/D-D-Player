@@ -104,26 +104,6 @@ client.on('message', async message => {
                 }
             });
             break;
-        case "loop":
-            LOOP = !LOOP;
-            if(LOOP === true) {
-                message.channel.send({
-                    embed: {
-                        color: 15277667,
-                        title: "Toggling loop",
-                        description: "Currently the loop is active",
-                    }
-                });
-            } else {
-                message.channel.send({
-                    embed: {
-                        color: 15277667,
-                        title: "Toggling loop",
-                        description: "Currently the loop is not active",
-                    }
-                });
-            }
-            break;
         default:
             var valid_cmds = ['stop', 'join', 'leave', 'help']
             var valid_cmds_json = Object.keys(data);
@@ -156,37 +136,19 @@ client.on('message', async message => {
                         }
                     }
                 });
-                if(LOOP === true) {
-                    while(LOOP === true) {
-                        connection.play(ytdl(music, {
-                            filter: 'audioonly'
-                        }, {
-                            type: 'ogg/opus'
-                        }, {
-                            volume: false
-                        }, {
-                            quality: 'highestaudio'
-                        }, {
-                            highWaterMark: 1 << 25
-                        }, {
-                            highWaterMark: 1
-                        }))
-                    }
-                } else {
-                  connection.play(ytdl(music, {
-                      filter: 'audioonly'
-                  }, {
-                      type: 'ogg/opus'
-                  }, {
-                      volume: false
-                  }, {
-                      quality: 'highestaudio'
-                  }, {
-                      highWaterMark: 1 << 25
-                  }, {
-                      highWaterMark: 1
-                  }))
-                }
+                connection.play(ytdl(music, {
+                    filter: 'audioonly'
+                }, {
+                    type: 'ogg/opus'
+                }, {
+                    volume: false
+                }, {
+                    quality: 'highestaudio'
+                }, {
+                    highWaterMark: 1 << 25
+                }, {
+                    highWaterMark: 1
+                }))
             };
     }
 });
